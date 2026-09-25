@@ -1,0 +1,65 @@
+service: backend
+
+provider:
+    name: aws
+    runtime: nodejs24.x
+    architecture: arm64
+    region: eu-north-1
+    iam:
+        role: ${file(./config.yml):role}
+    environment:
+        JWT_SECRET: ${file(./config.yml):JWT_SECRET}
+        TABLE_NAME: notice-board-table
+    httpApi:
+        cors: true
+
+functions:
+    register:
+        handler: functions/auth/register/index.handler
+        events:
+            - httpApi:
+                  path: /api/auth/register
+                  method: POST
+
+resources:
+    Resources:
+        NoticeBoardTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: notice-board-table
+                BillingMode: PAY_PER_REQUEST
+                AttributeDefinitions:
+                    - AttributeName: PK
+                      AttributeType: S
+                    - AttributeName: SK
+                      AttributeType: S
+                    - AttributeName: GSI1PK
+                      AttributeType: S
+                    - AttributeName: GSI1SK
+                      AttributeType: S
+                    - AttributeName: GSI2PK
+                      AttributeType: S
+                    - AttributeName: GSI2SK
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: PK
+                      KeyType: HASH
+                    - AttributeName: SK
+                      KeyType: RANGE
+                GlobalSecondaryIndexes:
+                    - IndexName: GSI1
+                      KeySchema:
+                          - AttributeName: GSI1PK
+                            KeyType: HASH
+                          - AttributeName: GSI1SK
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
+                    - IndexName: GSI2
+                      KeySchema:
+                          - AttributeName: GSI2PK
+                            KeyType: HASH
+                          - AttributeName: GSI2SK
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
