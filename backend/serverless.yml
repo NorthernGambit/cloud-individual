@@ -14,12 +14,32 @@ provider:
         cors: true
 
 functions:
+    # AUTH
     register:
         handler: functions/auth/register/index.handler
         events:
             - httpApi:
                   path: /api/auth/register
                   method: POST
+    login:
+        handler: functions/auth/login/index.handler
+        events:
+            - httpApi:
+                  path: /api/auth/login
+                  method: POST
+    # POSTS
+    createPost:
+        handler: functions/posts/createPost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts
+                  method: POST
+    getAllPosts:
+        handler: functions/posts/getAllPosts/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts
+                  method: GET
 
 resources:
     Resources:

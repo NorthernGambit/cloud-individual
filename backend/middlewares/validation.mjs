@@ -5,7 +5,7 @@ export const validateBody = (schema) => ({
 		const body = handler.event.body;
 		const result = schema.safeParse(body);
 
-		if (!result.sucess) {
+		if (!result.success) {
 			throw createError(400, result.error.issues[0].message);
 		}
 

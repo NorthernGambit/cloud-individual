@@ -3,20 +3,23 @@ import jsonBodyParser from "@middy/http-json-body-parser";
 import { validateBody } from "../../../middlewares/validation.mjs";
 import { errorHandler } from "../../../middlewares/errorHandler.mjs";
 import { sendResponse } from "../../../responses/index.mjs";
-import { registerSchema } from "../../../models/authModels.mjs";
-import { registerUser } from "../../../services/auth.mjs";
+import { authorization } from "../../../middlewares/authentication.mjs";
+import { postSchema } from "../../../models/postModels.mjs";
+import { createPost } from "../../../services/posts.mjs";
 
 export const handler = middy(async (event) => {
-	const { username, email, password } = event.body;
+	const { text } = event.body;
+	const { username } = event.user;
 
-	const user = await registerUser(username, email, password);
+	const post = await createPost(text, username);
 
 	return sendResponse(201, {
 		success: true,
-		message: "Account succesfully registered",
-		user,
+		message: "Notice post successfully created",
+		post,
 	});
 })
 	.use(jsonBodyParser())
-	.use(validateBody(registerSchema))
+	.use(authorization())
+	.use(validateBody(postSchema))
 	.use(errorHandler());

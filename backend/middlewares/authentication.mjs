@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
 import createError from "http-errors";
+import { verifyToken } from "../utils/jwt.mjs";
 
 export const authorization = () => ({
 	before: (handler) => {
@@ -14,12 +14,8 @@ export const authorization = () => ({
 			);
 		}
 
-		const token = authHeader.token.split(" ")[1];
+		const token = authHeader.split(" ")[1];
 
-		try {
-			handler.event.user = jwt.verify(token, process.env.JWT_SECRET);
-		} catch (error) {
-			throw createError(401, "Invalid or expired token");
-		}
+		handler.event.user = verifyToken(token);
 	},
 });
