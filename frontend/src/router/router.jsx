@@ -6,24 +6,28 @@ import NewMessagePage from "../pages/newmessagepage/NewMessagePage";
 import EditMessagePage from "../pages/editmessagepage/EditMessagePage";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <HomePage />,
-    },
-    {
-        path: "/login",
-        element: <LoginPage />,
-    },
-    {
-        path: "/register",
-        element: <RegisterPage />,
-    },
-    {
-        path: "/message/create",
-        element: <NewMessagePage />,
-    }, 
-    {
-        path: "/message/edit/:id",
-        element: <EditMessagePage />,
-    }
+	{
+		path: "/",
+		element: <HomePage />,
+	},
+	{
+		path: "/login",
+		element: <LoginPage />,
+	},
+	{
+		path: "/register",
+		element: <RegisterPage />,
+	},
+	{
+		path: "/message/create",
+		element: <NewMessagePage />,
+	},
+	{
+		path: "/message/edit/:id",
+		element: <EditMessagePage />,
+	},
+	{
+		path: "*",
+		element: <Navigate to="/" replace />,
+	},
 ]);
