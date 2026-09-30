@@ -15,7 +15,7 @@ export const handler = middy(async (event) => {
 
 	return sendResponse(201, {
 		success: true,
-		message: "Notice post successfully created",
+		message: "Post successfully created",
 		post,
 	});
 })

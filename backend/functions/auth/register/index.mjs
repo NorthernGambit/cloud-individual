@@ -13,7 +13,7 @@ export const handler = middy(async (event) => {
 
 	return sendResponse(201, {
 		success: true,
-		message: "Account succesfully registered",
+		message: "Account successfully registered",
 		user,
 	});
 })

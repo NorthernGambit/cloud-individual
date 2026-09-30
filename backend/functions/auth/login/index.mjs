@@ -9,12 +9,13 @@ import { loginUser } from "../../../services/auth.mjs";
 export const handler = middy(async (event) => {
 	const { usernameOrEmail, password } = event.body;
 
-	const token = await loginUser(usernameOrEmail, password);
+	const { token, username } = await loginUser(usernameOrEmail, password);
 
 	return sendResponse(200, {
 		success: true,
 		message: "User successfully logged in",
 		token,
+		username,
 	});
 })
 	.use(jsonBodyParser())

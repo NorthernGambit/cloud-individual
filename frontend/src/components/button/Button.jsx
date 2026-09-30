@@ -1,14 +1,15 @@
-import './index.css';
+import "./index.css";
 
-const Button = ({ text, type, onClick }) => {
-    return (
-        <button 
-            className={`button button--${type}`}
-            onClick={ onClick }
-        >
-            { text }
-        </button>
-    )
-}
+const Button = ({ text, type, onClick, disabled }) => {
+	return (
+		<button
+			className={`button button--${type}`}
+			onClick={onClick}
+			disabled={disabled}
+		>
+			{text}
+		</button>
+	);
+};
 
 export default Button;

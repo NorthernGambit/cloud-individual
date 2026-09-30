@@ -40,6 +40,30 @@ functions:
             - httpApi:
                   path: /api/posts
                   method: GET
+    getPostById:
+        handler: functions/posts/getPostById/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: GET
+    getCurrentUserPosts:
+        handler: functions/posts/getCurrentUserPosts/index.handler
+        events:
+            - httpApi:
+                  path: /api/me/posts
+                  method: GET
+    updatePost:
+        handler: functions/posts/updatePost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: PATCH
+    deletePost:
+        handler: functions/posts/deletePost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: DELETE
 
 resources:
     Resources:

@@ -1,53 +1,62 @@
-import { useState } from 'react';
-import './index.css';
-import Button from '../button/Button';
+import { useRef, useState } from "react";
+import "./index.css";
+import Button from "../button/Button";
 
-const MessageForm = ({ message = null }) => {
-    const [text, setText] = useState(message?.text ?? '');
+const MessageForm = ({ message = null, handleSubmit, disabled }) => {
+	const [text, setText] = useState(message?.text ?? "");
 
-    return (
-        <form className="message-form">
-            <label className="message-form__label">
-                Användarnamn
+	const handleClearText = (event) => {
+		event.preventDefault();
 
-                <input
-                    type="text"
-                    className="message-form__input"
-                    placeholder="Skriv ditt namn här"
-                    value={ !message ? '' : message.user.username }
-                    disabled={ !message ? false : true }
-                />
-            </label>
+		setText("");
+	};
 
-            <label className="message-form__label">
-                Meddelande
+	return (
+		<form className="message-form">
+			<label className="message-form__label">
+				Meddelande
+				<div className="message-form__textarea-wrapper">
+					<textarea
+						className="message-form__textarea"
+						placeholder="Vad vill du säga?"
+						maxLength={200}
+						value={text}
+						onChange={(event) => setText(event.target.value)}
+					/>
 
-                <div className="message-form__textarea-wrapper">
-                    <textarea
-                        className="message-form__textarea"
-                        placeholder="Vad vill du säga?"
-                        maxLength={200}
-                        value={ text }
-                        onChange={(event) => setText(event.target.value)}
-                    />
-
-                    <span className="message-form__counter">
-                        {text.length}/200
-                    </span>
-                </div>
-            </label>
-            <Button 
-                text={ !message ? 'Publicera' : 'Spara ändringar' }
-                type="default"
-                onClick={ console.log('Spara meddelande') }
-            />
-            <Button 
-                text="Rensa"
-                type="outline"
-                onClick={ console.log('Rensa') }
-            />
-        </form>
-    );
+					<span className="message-form__counter">
+						{text.length}/200
+					</span>
+				</div>
+			</label>
+			{text.trim().length < 3 ? (
+				<Button
+					text={!message ? "Publicera" : "Spara ändringar"}
+					type="disabled"
+					disabled={true}
+				/>
+			) : (
+				<Button
+					text={
+						disabled
+							? !message
+								? "Publicerar..."
+								: "Sparar..."
+							: !message
+								? "Publicera"
+								: "Spara ändringar"
+					}
+					type={disabled ? "disabled" : "default"}
+					onClick={(e) => {
+						e.preventDefault();
+						handleSubmit(text.trim());
+					}}
+					disabled={disabled}
+				/>
+			)}
+			<Button text="Rensa" type="outline" onClick={handleClearText} />
+		</form>
+	);
 };
 
 export default MessageForm;

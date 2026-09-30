@@ -15,10 +15,6 @@ export const registerUser = async (username, email, password) => {
 		createdAt: new Date().toISOString(),
 	};
 
-	console.log(newUser);
-
-	console.log(process.env.TABLE_NAME);
-
 	// command to batch write to dynamodb, if any fail nothing gets written to the db
 	const command = new TransactWriteCommand({
 		TransactItems: [
@@ -113,10 +109,13 @@ export const loginUser = async (usernameOrEmail, password) => {
 	)
 		invalidCred();
 
-	// success, signing token and sending it to handler
-	return signToken({
-		username: userResult.username,
-	});
+	// success, signing token and also sending username unecnrypted for easier use in frontend
+	return {
+		token: signToken({
+			username: userResult.username,
+		}),
+		username,
+	};
 };
 
 const invalidCred = () => {
