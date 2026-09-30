@@ -1,0 +1,109 @@
+service: backend
+
+provider:
+    name: aws
+    runtime: nodejs24.x
+    architecture: arm64
+    region: eu-north-1
+    iam:
+        role: ${file(./config.yml):role}
+    environment:
+        JWT_SECRET: ${file(./config.yml):JWT_SECRET}
+        TABLE_NAME: notice-board-table
+    httpApi:
+        cors: true
+
+functions:
+    # AUTH
+    register:
+        handler: functions/auth/register/index.handler
+        events:
+            - httpApi:
+                  path: /api/auth/register
+                  method: POST
+    login:
+        handler: functions/auth/login/index.handler
+        events:
+            - httpApi:
+                  path: /api/auth/login
+                  method: POST
+    # POSTS
+    createPost:
+        handler: functions/posts/createPost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts
+                  method: POST
+    getAllPosts:
+        handler: functions/posts/getAllPosts/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts
+                  method: GET
+    getPostById:
+        handler: functions/posts/getPostById/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: GET
+    getCurrentUserPosts:
+        handler: functions/posts/getCurrentUserPosts/index.handler
+        events:
+            - httpApi:
+                  path: /api/me/posts
+                  method: GET
+    updatePost:
+        handler: functions/posts/updatePost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: PATCH
+    deletePost:
+        handler: functions/posts/deletePost/index.handler
+        events:
+            - httpApi:
+                  path: /api/posts/{id}
+                  method: DELETE
+
+resources:
+    Resources:
+        NoticeBoardTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: notice-board-table
+                BillingMode: PAY_PER_REQUEST
+                AttributeDefinitions:
+                    - AttributeName: PK
+                      AttributeType: S
+                    - AttributeName: SK
+                      AttributeType: S
+                    - AttributeName: GSI1PK
+                      AttributeType: S
+                    - AttributeName: GSI1SK
+                      AttributeType: S
+                    - AttributeName: GSI2PK
+                      AttributeType: S
+                    - AttributeName: GSI2SK
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: PK
+                      KeyType: HASH
+                    - AttributeName: SK
+                      KeyType: RANGE
+                GlobalSecondaryIndexes:
+                    - IndexName: GSI1
+                      KeySchema:
+                          - AttributeName: GSI1PK
+                            KeyType: HASH
+                          - AttributeName: GSI1SK
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
+                    - IndexName: GSI2
+                      KeySchema:
+                          - AttributeName: GSI2PK
+                            KeyType: HASH
+                          - AttributeName: GSI2SK
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
