@@ -33,7 +33,7 @@ const Message = ({ message }) => {
 
 	const createdStr = formatDate(message.createdAt);
 	const updatedStr = message.updatedAt ? formatDate(message.updatedAt) : null;
-	const isEdited = Boolean(updatedStr && updatedStr !== createdStr);
+	const isEdited = Boolean(message.updatedAt);
 
 	return (
 		<article className="message">
