@@ -44,3 +44,9 @@ jobs:
             - name: Deploy to S3
               working-directory: ./frontend
               run: aws s3 sync dist/ s3://shui-frontend-jonathan --delete
+
+            - name: Invalidate CloudFront cache
+              run: |
+                  aws cloudfront create-invalidation \
+                    --distribution-id E18HLK4GPAXI6N \
+                    --paths "/*"
