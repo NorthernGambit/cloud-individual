@@ -20,8 +20,8 @@ For this individual exam, I took an existing React frontend and built a complete
 
 | What                | Link                                                    |
 | :------------------ | :------------------------------------------------------ |
-| 🖥 **Frontend**     | https://d2cxonnul7ilal.cloudfront.net/                  |
-| 🔌 **API Base URL** | https://vtclqnyxak.execute-api.eu-north-1.amazonaws.com |
+| 🖥 **Frontend**     | https://aws-project.jonathanandersson.dev               |
+| 🔌 **API Base URL** | redacted |
 
 ---
 
@@ -130,7 +130,7 @@ npm install
 Create a `.env` file in the `frontend/` directory and configure the base API URL:
 
 ```env
-VITE_API_BASE_URL=https://vtclqnyxak.execute-api.eu-north-1.amazonaws.com
+VITE_API_BASE_URL=redacted
 ```
 
 ### 4. Start the Dev Server
@@ -145,7 +145,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 
 ## 📘 API Documentation
 
-**Base URL:** `https://vtclqnyxak.execute-api.eu-north-1.amazonaws.com`
+**Base URL:** `redacted`
 
 Endpoints marked with 🔒 require a valid JWT in the `Authorization` header:
 
